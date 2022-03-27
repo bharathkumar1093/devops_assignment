@@ -1,18 +1,25 @@
-1) the build should trigger as soon as any one in the dev team checks in to master branch
+1Q) the build should trigger as soon as any one in the dev team checks in to master branch
 
 Ans: while configuring the build pipeline, under the trigger tab options we can select the  enable continuous integration check in option (CI TRIGGERS), which will automatically trigger the pipeline whenever the dev team check in the code changes to master branch/specified branch or push specified tags
 
 
-2) There will be test projects which will create and maintained in the solutions along with web and api, the trigger should build all the 3 projects - web, api and test.
+
+
+
+2Q) There will be test projects which will create and maintained in the solutions along with web and api, the trigger should build all the 3 projects - web, api and test.
   the build should not be successful if any test fails.
 
 Ans: we can use the BUILD COMPLETION TRIGGER options for this solution.
 
     1st step ) while configuring the web project build pipeline under the trigger tab options we can configur the build completion option for setting up triggering the api project along with the branch details
-    2nd step ) while configuring the api project build pipeline under the trigger tab options we can configure the build completion option for setting up triggering the test project along with the branch details. 
+    2nd step ) while configuring the api project build pipeline under the trigger tab options we can configur the build completion option for setting up triggering the test project along with the branch details. 
     
+    
+   
+   
+   
 
-3) The deployment of code and artifacts should be automated to Dev environment.
+3Q) The deployment of code and artifacts should be automated to Dev environment.
  
  Ans: Release pipeline comprises of the artifacts and deployment stages. 
  
@@ -24,5 +31,41 @@ Ans: we can use the BUILD COMPLETION TRIGGER options for this solution.
 
 4th step) Link the build pipeline as an artifact for this release pipeline. Save the release pipeline and create a release to see it in action.
 
-Note: to automate the code deployment and artifacts we can enable the Continuous deployment trigger options (Creates a release every time an image is pushed to the selected repository) to Dev env.
+Note: to automate the code deployment and artifacts we can enable the Continuous deployment trigger (CD Triggers) options ( which will Creates a release every time an image is pushed to the selected repository) to Dev env.
 
+
+
+
+
+
+
+4Q) Upon successful deployment to the Dev environemnt, deployment should be easily promoted to QA and PROD through automated process.
+
+Ans; we can add the new stages for QA and PROD env and This is a typical scenario where you would deploy initially to a test or staging server, and then to a live or production server. Each stage represents one deployment target.
+
+1st step) Select the Pipeline tab in your release pipeline and select the existing stage. Change the name of your stage to QA .
+
+2nd step) Select the + Add drop-down list and choose Clone stage (the clone option is available only when an existing stage is selected).
+
+3rd step) To reorganize the stages in the pipeline, select the Pre-deployment conditions icon in your QA stage and set the trigger to After release. The pipeline diagram will then show the two stages in parallel.
+
+4th Step) Select the Pre-deployment conditions icon in your Production stage and set the trigger to After stage, then select QA in the Stages drop-down list. The pipeline diagram will now indicate that the two stages will execute in the correct order.
+
+the same steps will be followed for prod deployment stages also. 
+
+
+
+
+5Q) The deployments to QA and PROd should be enabled with approvals from approvers only. 
+
+Ans: This solution can be achieved using the Add Pre-deployment approvals options.
+
+ The release pipeline we previously modified deploys to QA and production. If the deployment to QA fails, then deployment to production won't trigger. It is recommended to always verify if your app is working properly in QA or test stage before deploying to production. Adding approvals will ensure all the criteria are met before deploying to the next stage. To add approvals to your pipeline follow the steps below:
+
+1st step) Select the Pipeline tab, Pre-deployment conditions icon then Pre-deployment approvers.
+
+2nd step) In the Approvers text box, enter the user(s) that will be responsible for approving the deployment. It is also recommended to uncheck the The user requesting a release or deployment should not approve it check box.
+
+          You can add as many approvers as you need, both individual users and organization groups. It's also possible to set up post-deployment approvals by selecting the "user" icon at the right side of the stage in the pipeline diagram
+          
+3rd step) and save it
