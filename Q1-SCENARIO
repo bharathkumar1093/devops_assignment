@@ -6,4 +6,7 @@ Ans: while configuring the build pipeline, under the trigger tab options we can 
 2) There will be test projects which will create and maintained in the solutions along with web and api, the trigger should build all the 3 projects - web, api and test.
   the build should not be successful if any test fails.
 
-Ans: 
+Ans: we can use the build completion trigger options for this solution.
+    1st step ) while configuring the web build pipeline under the trigger tab options we can configur the build completion option for setting up triggering in api project along with the branch details
+    2nd step ) while configuring the api build pipeline under the trigger tab options we can configure the build completion option for setting up triggering in test project along with the branch details. 
+    
