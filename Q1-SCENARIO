@@ -1,0 +1,3 @@
+1) the build should trigger as soon as any one in the dev team checks in to master branch
+
+Ans: while configuring the build pipeline, under the trigger tab options we can select the  enable continuous integration check in option, which will automatically trigger the pipeline whenever the dev team check in the code changes to master branch
