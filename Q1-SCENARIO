@@ -6,7 +6,22 @@ Ans: while configuring the build pipeline, under the trigger tab options we can 
 2) There will be test projects which will create and maintained in the solutions along with web and api, the trigger should build all the 3 projects - web, api and test.
   the build should not be successful if any test fails.
 
-Ans: we can use the build completion trigger options for this solution.
-    1st step ) while configuring the web build pipeline under the trigger tab options we can configur the build completion option for setting up triggering in api project along with the branch details
-    2nd step ) while configuring the api build pipeline under the trigger tab options we can configure the build completion option for setting up triggering in test project along with the branch details. 
+Ans: we can use the BUILD COMPLETION TRIGGER options for this solution.
+    1st step ) while configuring the web project build pipeline under the trigger tab options we can configur the build completion option for setting up triggering in api project along with the branch details
+    2nd step ) while configuring the api project build pipeline under the trigger tab options we can configure the build completion option for setting up triggering in test project along with the branch details. 
     
+
+3) The deployment of code and artifacts should be automated to Dev environment.
+ 
+ Ans: Release pipeline comprises of the artifacts and deployment stages. 
+ 
+1st step) Create a pipeline and select the ASP.NET Core template. This selection automatically adds the tasks required to build the code in the sample repository.
+
+2nd step) Save the pipeline and queue a build to see it in action.
+
+3rd step) Create a release pipeline and select the Azure App Service Deployment template for your stage. This automatically adds the necessary tasks.
+
+4th sep) Link the build pipeline as an artifact for this release pipeline. Save the release pipeline and create a release to see it in action.
+
+Note: to automate the code deployment and artifacts we can enable the Continuous deployment trigger options (Creates a release every time an image is pushed to the selected repository) to Dev env.
+
