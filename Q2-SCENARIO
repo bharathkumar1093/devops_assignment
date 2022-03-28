@@ -106,9 +106,26 @@ resource "azurerm_network_security_rule" "devops" {
 
 
 
-
-
 5) Explain how will you access the password stored in key vault and use it as Admin password in the VM terraform template 
+
+below steps in managing the azure key vault with the terraform template.
+
+Step1) Inside the keyvault folder, create the variables.tf file to store variables used by the module:
+
+Step2) Then, create the main.tf to create the Azure Key Vault and policies, inside the keyvault folder
+
+Step3) Finally, we create the ouput.tf file in the same folder used to return the values of the Terraform module
+
+
+we can use/access the key vault module the below steps
+
+Step1) Create the variables.tf file to store variables used by the module in the root folder. I use variables in a separate variables.tf file for readability, however, you can use variables directly in the main.tf code.
+
+Step2) Here is the code to call the module in the main.tf file of the root folder. We will pass the Resource Group, location and other parameters to the module.
+
+Step3) Also, we created two Key Vault policies, one full for administrators and one read for applications. The settings of these policies can be modified from the variables.tf file.
+
+Step4) Finally, we define the content variables in the terraform.tfvars file. We will pass the object ID of a user, service principal or security group for FULL and READ access using kv-full-object-id and kv-read-object-id variables and the secrets using a map object.
 
 
 
