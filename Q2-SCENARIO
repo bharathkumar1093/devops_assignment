@@ -4,6 +4,8 @@ Ans: Not getting this questions properly . hope its refering the build artifacts
 
 
 
+
+
 2) List the tools you will to create and store the terraform templates. 
 
 Ans: step1) create the directory structure for different env like DEV, QA and UAT and PROD
@@ -14,11 +16,69 @@ Ans: step1) create the directory structure for different env like DEV, QA and UA
      
             main.tf(main terraform configurations file which terraform version and providers) , var.tf(contains all the variable information)
             
-     step4) all these directory terraform templtes are stored in any private git hub repository
+     step4) all these directory terraform templtes are stored in any private git hub repository / azure repo or we can store it in the azure storage account / storage containers
+
+
+
+
 
 
 
 3) Explain the process and steps to create automated deployment pipeline. 
+
+>>>>> Defining the terraform file Iac in our source code - Azure Git repo 
+
+step1) Go to the orgonization under that the proect from the Azure Devops 
+
+step2) Select Repos. Switch to terraform branch. Make sure that you are now on the terraform branch and Terraform folder is there in the repo.
+
+step3) Select the webapp.tf file under the Terraform folder. Go through the code. webapp.tf is a terraform configuration file. Terraform uses its own file format, called HCL (Hashicorp Configuration Language). This is very similar to YAML.
+
+>>>>>Build your application using Azure CI Pipeline
+
+step1) Navigate to Pipelines –> Pipelines. Select Terraform-CI and click Edit.
+
+step2) is CI pipeline has tasks to compile .Net Core project. The dotnet tasks in the pipeline will restore dependencies, build, test and publish the build output into a zip file (package) which can be deployed to a web application
+
+step3) In addition to the application build, we need to publish terraform files to build artifacts so that it will be available in CD pipeline. So we have added Copy files task to copy Terraform file to Artifacts directory.
+
+step4) Now click Queue to trigger the build. Once the build succeeds, verify that the artifacts have Terraform folder and PartsUnlimitedwebsite.zip file in the drop.
+
+>>>>>Deploy resources using Terraform (IaC) in Azure CD pipeline
+
+step1) Navigate to Pipelines –> Releases. Select Terraform-CD and click Edit.
+
+step2) Select Dev stage and click View stage tasks to view the pipeline tasks.
+
+step3) Select the Azure CLI task. Select the Azure subscription from the drop-down list and click Authorize to configure Azure service connection.
+
+step4) Select the Azure PowerShell task. Select Azure service connection from the drop-down. To configure the Terraform backend we need Storage account access key. Here we are using Azure PowerShell task to get the Access key of the storage account provisioned in the previous step.
+
+step5) Select the Replace tokens task.
+
+step6) Terraform tool installer task is used to install a specified version of Terraform from the Internet or the tools cache and prepends it to the PATH of the Azure Pipelines Agent (hosted or private).
+
+step7) When running Terraform in automation, the focus is usually on the core plan/apply cycle
+
+step8) Select the Terraform init task. Select Azure service connection from the drop-down. And make sure to enter the container name as terraform 
+     
+	  This task runs terraform init command. The terraform init command looks through all of the *.tf files in the current working directory and automatically downloads any of the providers required for them. In this example, it will download Azure provider as we are going to deploy Azure resources.
+	  
+step9) Select the Terraform plan task. Select Azure service connection from the drop-down.
+ 
+      The terraform plan command is used to create an execution plan. Terraform determines what actions are necessary to achieve the desired state specified in the configuration files
+
+step10) Select the Terraform Apply task. Select Azure service connection from the drop-down.
+ 
+     This task will run the terraform apply command to deploy the resources. By default, it will also prompt for confirmation that you want to apply those changes.
+	 
+step11) Select Azure App Service Deploy task. Select Azure service connection from the drop-down.
+
+	This task will deploy the PartsUnlimited package to Azure app service
+	
+step12) Once you are done Save the changes and Create a release.
+
+
 
 
 
@@ -29,20 +89,19 @@ Ans: step1) create the directory structure for different env like DEV, QA and UA
 
 Ans: 
 
-
-resource "azurerm_resource_group" "devops" {
+resource "azurerm_resource_group" "devops_rg" {
   name     = "devops-resources"
   location = "West Europe"
 }
 
-resource "azurerm_virtual_network" "devops" {
+resource "azurerm_virtual_network" "devops_vnet" {
   name                = "devops-network"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
 }
 
-resource "azurerm_subnet" "devops" {
+resource "azurerm_subnet" "devops_subnet" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
@@ -50,14 +109,14 @@ resource "azurerm_subnet" "devops" {
  
 }
 
-resource "azurerm_subnet" "devops2" {
+resource "azurerm_subnet" "devops_subnet2" {
   name                 = "internal2"
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.3.0/24"]
 }
 
-resource "azurerm_network_interface" "devops" {
+resource "azurerm_network_interface" "devops_nic" {
   name                = "devops-nic"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
@@ -69,7 +128,7 @@ resource "azurerm_network_interface" "devops" {
   }
 }
 
-resource "azurerm_windows_virtual_machine" "devops" {
+resource "azurerm_windows_virtual_machine" "devops_vm" {
   name                = "devops-machine"
   resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
@@ -94,7 +153,7 @@ resource "azurerm_windows_virtual_machine" "devops" {
 }
 
 
-resource "azurerm_storage_account" "devops" {
+resource "azurerm_storage_account" "devops_storage" {
   name                     = "storageaccountname"
   resource_group_name      = azurerm_resource_group.example.name
   location                 = azurerm_resource_group.example.location
@@ -107,7 +166,7 @@ resource "azurerm_storage_account" "devops" {
 }tags
 
 
-resource "azurerm_network_security_rule" "devops" {
+resource "azurerm_network_security_rule" "devops_nsg" {
   name                        = "test123"
   priority                    = 100
   direction                   = "Inbound"
