@@ -1,13 +1,20 @@
 1) what are different artifacts you need to create - name of the artifacts and its purpose
 
+Ans: Not getting this questions properly . hope its refering the build artifacts from the Azure Devops.
+
 
 
 2) List the tools you will to create and store the terraform templates. 
 
-i will create the resource components like 
-
-variables.tf, main.tf and output.tf and store the these configurations file in the private repository like in the azure git repo
-
+Ans: step1) create the directory structure for different env like DEV, QA and UAT and PROD
+ 
+     step2) create the sub directory structure under the env dir for each resource like for virtual machine, vnet, ip , storage and NSG like any other resource components
+     
+     step3) under each sub directory of the resource which will create like virtuanlet.tf(which is having the complete information about the infrastrucure of virtualnetwork)
+     
+            main.tf(main terraform configurations file which terraform version and providers) , var.tf(contains all the variable information)
+            
+     step4) all these directory terraform templtes are stored in any private git hub repository
 
 
 
