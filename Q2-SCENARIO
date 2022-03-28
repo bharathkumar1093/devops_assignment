@@ -4,6 +4,10 @@
 
 2) List the tools you will to create and store the terraform templates. 
 
+i will create the resource components like 
+
+variables.tf, main.tf and output.tf and store the these configurations file in the private repository like in the azure git repo
+
 
 
 
