@@ -25,9 +25,9 @@ Ans: step1) create the directory structure for different env like DEV, QA and UA
 
 
 
-4) Create a sample Terraform template you will use to deploy below services:
+4) Create a sample Terraform template you will use to deploy below services: vnet, 2 subnet, NSG to open port 80 and 443, 1 windows VM in each subnet and 1 storage account 
 
-vnet, 2 subnet, NSG to open port 80 and 443, 1 windows VM in each subnet and 1 storage account 
+Ans: 
 
 
 resource "azurerm_resource_group" "devops" {
@@ -47,6 +47,14 @@ resource "azurerm_subnet" "devops" {
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.2.0/24"]
+ 
+}
+
+resource "azurerm_subnet" "devops2" {
+  name                 = "internal2"
+  resource_group_name  = azurerm_resource_group.example.name
+  virtual_network_name = azurerm_virtual_network.example.name
+  address_prefixes     = ["10.0.3.0/24"]
 }
 
 resource "azurerm_network_interface" "devops" {
