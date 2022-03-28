@@ -2,6 +2,7 @@
 
 Ans: Not getting this questions properly . hope its refering the build artifacts from the Azure Devops.
 
+Build artifacts - basically contains our compilated code in jar/war/ear for java project or .net project its in list of the directories in the publish.
 
 
 
